@@ -62,6 +62,10 @@ app.post("/api/product/create", async (req, res) => {
     }
   });
 
+  app.get("/", (req, res) => {
+    res.status(200).send("Welcome to the assessment");
+  });
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
