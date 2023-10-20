@@ -24,23 +24,25 @@ async function registerUser(firstName, lastName, username, password) {
 }
 
 async function loginUser(username, password) {
+  console.log('here1');
   const user = await User.findOne({ username }).lean();
  
-
+console.log('here');
   if (!user) {
     throw new Error("Authentication failed");
   }
-
+  console.log('here2');
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) {
     throw new Error("Authentication failed");
   }
-  
+  console.log('here3');
   const token = jwt.sign({ username: user.username }, process.env.SECRET_KEY, {
     expiresIn: "1h",
   });
  
   delete user.password
+  console.log('here4');
   return {token, user};
 }
 
