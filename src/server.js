@@ -2,15 +2,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-require('dotenv').config();
-
+require("dotenv").config();
 
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // Connect to your MongoDB database
 mongoose.connect(process.env.DB, {
@@ -46,28 +49,28 @@ app.post("/api/user/login", async (req, res) => {
 });
 
 app.post("/api/product/create", async (req, res) => {
-    const { name, description, price, quantity } = req.body;
-    try {
-      const product = await createProduct(name, description, price, quantity);
-      res.status(201).json({ message: "Product created", data: product });
-    } catch (error) {
-      res.status(500).json({ message: "Product creation failed" });
-    }
-  });
+  const { name, description, price, quantity } = req.body;
+  try {
+    const product = await createProduct(name, description, price, quantity);
+    res.status(201).json({ message: "Product created", data: product });
+  } catch (error) {
+    res.status(500).json({ message: "Product creation failed" });
+  }
+});
 
-  app.get("/api/product/list", async (req, res) => {
-    const { page, limit } = req.query;
-    try {
-      const products = await getProducts(page, limit);
-      res.status(200).json({ data: products });
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch products" });
-    }
-  });
+app.get("/api/product/list", async (req, res) => {
+  const { page, limit } = req.query;
+  try {
+    const products = await getProducts(page, limit);
+    res.status(200).json({ data: products });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch products" });
+  }
+});
 
-  app.get("/", (req, res) => {
-    res.status(200).send("Welcome to the assessment");
-  });
+app.get("/", (req, res) => {
+  res.status(200).send("Welcome to the assessment");
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
