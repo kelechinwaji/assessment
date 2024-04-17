@@ -1,14 +1,13 @@
 import { userType } from "../../types/user";
 import { hashPassword, comparePassword } from "../../utils/password";
-import User from "../model/user";
-
+import User from "../../database/model/user";
 
 export class AuthService {
   /**
    * Creates a new user
    * @param user
    */
-  async signup(user: userType) {
+  static async signup(user: userType) {
     // Check if user already exists
     const existingUser = await User.findOne({ email: user.email });
     if (existingUser) {
@@ -30,15 +29,16 @@ export class AuthService {
       return {
         error: false,
         message: "User created successfully",
-        user: newUser, // Optionally return the created user
+        user: newUser,
       };
     } catch (error) {
       return {
         error: true,
         message: "Failed to create user",
-        // Optionally include the error details for debugging
         errorDetails: error,
       };
     }
   }
+
+  
 }
