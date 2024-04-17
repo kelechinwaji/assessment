@@ -1,5 +1,7 @@
 import { userType } from "../../types/user";
+import { hashPassword, comparePassword } from "../../utils/password";
 import User from "../model/user";
+
 
 export class AuthService {
   /**
@@ -16,12 +18,13 @@ export class AuthService {
       };
     }
 
+    const hashedpassword = await hashPassword(user.password);
     // Create a new user
     try {
       const newUser = await User.create({
         name: user.name,
         email: user.email,
-        password: user.password,
+        password: hashedpassword,
       });
 
       return {
