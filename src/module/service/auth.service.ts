@@ -27,10 +27,15 @@ export class AuthService {
         password: hashedpassword,
       });
 
+      // Omit the password field from the user data
+      const userWithoutPassword = { ...newUser.toObject() };
+       // @ts-ignore
+      delete userWithoutPassword.password;
+
       return {
         error: false,
         message: "User created successfully",
-        user: newUser,
+        user: userWithoutPassword,
       };
     } catch (error) {
       return {

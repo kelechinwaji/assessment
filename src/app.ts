@@ -2,12 +2,14 @@
 import express from "express";
 import bodyParser from "body-parser";
 import connectDB from "./database/config";
+import route from "../src/route/routes";
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-
+app.use(route)
 const startServer = async () => {
   try {
     await connectDB();
