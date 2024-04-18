@@ -20,4 +20,21 @@ export class AuthController {
       return info.errResponse(res, 500, "Internal Server Error", error);
     }
   }
+
+  
+  /**
+   * Handles the login process for a user.
+   * @param req - Express request object.
+   * @param res - Express response object.
+   * @returns HTTP response indicating success or failure.
+   */
+  static async signIn(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+      const result = await AuthService.signIn(email, password);
+      return info.okResponse(res, 200, result.message, result.user);
+    } catch (error) {
+      return info.errResponse(res, 500, "Internal Server Error", error);
+    }
+  }
 }
