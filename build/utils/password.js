@@ -12,24 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const config_1 = __importDefault(require("./database/config"));
-const routes_1 = __importDefault(require("./module/route/routes"));
-const app = (0, express_1.default)();
-const PORT = process.env.PORT || 4000;
-app.use(body_parser_1.default.json());
-app.use(routes_1.default);
-const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield (0, config_1.default)();
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    }
-    catch (error) {
-        console.error("Error starting server:", error);
-        process.exit(1); // Exit process with failure
-    }
-});
-startServer();
+exports.comparePassword = exports.hashPassword = void 0;
+// import * as bcrypt from 'bcrypt';
+const bcrypt_1 = __importDefault(require("bcrypt"));
+/**
+ * Hash password using bcrypt
+ *
+ * @param password
+ */
+function hashPassword(password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const saltOrRounds = 10;
+        return yield bcrypt_1.default.hash(password, saltOrRounds);
+    });
+}
+exports.hashPassword = hashPassword;
+/**
+ * Compare password
+ *
+ * @param password
+ * @param hash
+ */
+function comparePassword(password, hash) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield bcrypt_1.default.compare(password, hash);
+    });
+}
+exports.comparePassword = comparePassword;
