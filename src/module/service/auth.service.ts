@@ -29,7 +29,7 @@ export class AuthService {
 
       // Omit the password field from the user data
       const userWithoutPassword = { ...newUser.toObject() };
-       // @ts-ignore
+      // @ts-ignore
       delete userWithoutPassword.password;
 
       return {
@@ -94,5 +94,18 @@ export class AuthService {
       message: "User Login successfully",
       user: data,
     };
+  }
+
+  static async getUserById(userId: string) {
+    const user = await User.findById({ _id: userId });
+
+    if (!user) {
+      return {
+        error: false,
+        message: "User not found",
+      };
+    }
+
+    return user;
   }
 }
